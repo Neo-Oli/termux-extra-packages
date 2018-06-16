@@ -1,0 +1,284 @@
+diff -uNr The-Powder-Toy-92.5/SConscript The-Powder-Toy-92.5.mod/SConscript
+--- The-Powder-Toy-92.5/SConscript	2017-09-21 16:06:38.000000000 +0300
++++ The-Powder-Toy-92.5.mod/SConscript	2018-01-21 18:07:48.961919954 +0200
+@@ -21,9 +21,9 @@
+ 		data, err = proc.communicate()
+ 		rv = proc.wait()
+ 		if rv:
+-			print "====="
+-			print err
+-			print "====="
++			print("=====")
++			print(err)
++			print("=====")
+ 		return rv
+ def SetupSpawn(env):
+ 	buf = ourSpawn()
+@@ -137,7 +137,7 @@
+ for var in ["CC","CXX","LD","LIBPATH","STRIP"]:
+ 	if var in os.environ:
+ 		env[var] = os.environ[var]
+-		print "copying environment variable {0}={1!r}".format(var,os.environ[var])
++		print("copying environment variable {0}={1!r}".format(var,os.environ[var]))
+ # variables containing several space separated things
+ for var in ["CFLAGS","CCFLAGS","CXXFLAGS","LINKFLAGS","CPPDEFINES","CPPPATH"]:
+ 	if var in os.environ:
+@@ -145,7 +145,7 @@
+ 			env[var] += SCons.Util.CLVar(os.environ[var])
+ 		else:
+ 			env[var] = SCons.Util.CLVar(os.environ[var])
+-		print "copying environment variable {0}={1!r}".format(var,os.environ[var])
++		print("copying environment variable {0}={1!r}".format(var,os.environ[var]))
+ 
+ #Used for intro text / executable name, actual bit flags are only set if the --64bit/--32bit command line args are given
+ def add32bitflags(env):
+@@ -158,12 +158,8 @@
+ 	env["BIT"] = 64
+ #add 32/64 bit defines before configuration
+ if GetOption('64bit'):
+-	env.Append(LINKFLAGS=['-m64'])
+-	env.Append(CCFLAGS=['-m64'])
+ 	add64bitflags(env)
+ elif GetOption('32bit'):
+-	env.Append(LINKFLAGS=['-m32'])
+-	env.Append(CCFLAGS=['-m32'])
+ 	add32bitflags(env)
+ 
+ if GetOption('universal'):
+@@ -377,7 +373,7 @@
+ 	try:
+ 		shutil.rmtree("generated/")
+ 	except:
+-		print "couldn't remove build/generated/"
++		print("couldn't remove build/generated/")
+ elif not GetOption('help'):
+ 	conf = Configure(env)
+ 	conf.AddTest('CheckFramework', CheckFramework)
+@@ -390,10 +386,10 @@
+ 	env = conf.Finish()
+ 
+ if not msvc:
+-	if platform == "Windows":
+-		env.Append(CXXFLAGS=['-std=gnu++98'])
+-	else:
+-		env.Append(CXXFLAGS=['-std=c++98'])
++#	if platform == "Windows":
++#		env.Append(CXXFLAGS=['-std=gnu++98'])
++#	else:
++#		env.Append(CXXFLAGS=['-std=c++98'])
+ 	env.Append(CXXFLAGS=['-Wno-invalid-offsetof'])
+ 	if platform == "Linux":
+ 		env.Append(CXXFLAGS=['-Wno-unused-result'])
+@@ -466,9 +462,7 @@
+ 		else:
+ 			env.Append(CCFLAGS=['/MD'])
+ 	else:
+-		env.Append(CCFLAGS=['-O3', '-ftree-vectorize', '-funsafe-math-optimizations', '-ffast-math', '-fomit-frame-pointer'])
+-		if platform != "Darwin":
+-			env.Append(CCFLAGS=['-funsafe-loop-optimizations'])
++		env.Append(CCFLAGS=['-Oz', '-fomit-frame-pointer'])
+ 
+ if GetOption('static'):
+ 	if platform == "Windows":
+@@ -534,8 +528,8 @@
+ if platform == "Windows":
+ 	sources += env.RES('resources/powder-res.rc')
+ 	if not msvc:
+-		sources = filter(lambda source: not 'src\\simulation\\Gravity.cpp' in str(source), sources)
+-		sources = filter(lambda source: not 'src/simulation/Gravity.cpp' in str(source), sources)
++		sources = [source for source in sources if not 'src\\simulation\\Gravity.cpp' in str(source)]
++		sources = [source for source in sources if not 'src/simulation/Gravity.cpp' in str(source)]
+ 		envCopy = env.Clone()
+ 		envCopy.Append(CCFLAGS='-mstackrealign')
+ 		sources += envCopy.Object('src/simulation/Gravity.cpp')
+diff -uNr The-Powder-Toy-92.5/SConstruct The-Powder-Toy-92.5.mod/SConstruct
+--- The-Powder-Toy-92.5/SConstruct	2017-09-21 16:06:38.000000000 +0300
++++ The-Powder-Toy-92.5.mod/SConstruct	2018-01-21 17:45:20.291920919 +0200
+@@ -1,6 +1,6 @@
+ #run generator.py
+ if not GetOption('clean'):
+-	execfile("generator.py")
++	exec(compile(open("generator.py").read(), "generator.py", 'exec'))
+ 
+ AddOption('--builddir',dest="builddir",default="build",help="Directory to build to.")
+ SConscript('SConscript', variant_dir=GetOption('builddir'), duplicate=0)
+@@ -9,14 +9,14 @@
+ 	try:
+ 		shutil.rmtree(".sconf_temp/")
+ 	except:
+-		print "couldn't remove .sconf_temp/"
++		print("couldn't remove .sconf_temp/")
+ 
+ 	try:
+ 		shutil.rmtree("generated/")
+ 	except:
+-		print "couldn't remove generated/"
++		print("couldn't remove generated/")
+ 
+ 	try:
+ 		os.remove(".sconsign.dblite")
+ 	except:
+-		print "couldn't remove .sconsign.dblite"
++		print("couldn't remove .sconsign.dblite")
+diff -uNr The-Powder-Toy-92.5/build_for_termux.sh The-Powder-Toy-92.5.mod/build_for_termux.sh
+--- The-Powder-Toy-92.5/build_for_termux.sh	1970-01-01 03:00:00.000000000 +0300
++++ The-Powder-Toy-92.5.mod/build_for_termux.sh	2018-01-21 17:49:30.061920740 +0200
+@@ -0,0 +1,8 @@
++#!/data/data/com.termux/files/usr/bin/sh
++
++export CC=clang
++export CXX=clang++
++export CFLAGS="-fstack-protector-strong --param ssp-buffer-size=4 -Oz"
++export CXXFLAGS="${CFLAGS}"
++
++scons -j8 --lin --64bit --no-sse
+diff -uNr The-Powder-Toy-92.5/data/IntroText.h The-Powder-Toy-92.5.mod/data/IntroText.h
+--- The-Powder-Toy-92.5/data/IntroText.h	2017-09-21 16:06:38.000000000 +0300
++++ The-Powder-Toy-92.5.mod/data/IntroText.h	2018-01-21 18:17:11.231919552 +0200
+@@ -28,6 +28,8 @@
+ 	"\brThis is a BETA, you cannot save things publicly. If you are planning on publishing any saves, use the release version\n"
+ #endif
+ 	"\n"
++    "\brWarning: this is an experimental build and it may contain bugs.\n"
++    "\n"
+ 	"\bt" MTOS(SAVE_VERSION) "." MTOS(MINOR_VERSION) "." MTOS(BUILD_NUM) " " IDENT_PLATFORM " "
+ #ifdef SNAPSHOT
+ 	"SNAPSHOT " MTOS(SNAPSHOT_ID) " "
+diff -uNr The-Powder-Toy-92.5/src/Config.h The-Powder-Toy-92.5.mod/src/Config.h
+--- The-Powder-Toy-92.5/src/Config.h	2017-09-21 16:06:38.000000000 +0300
++++ The-Powder-Toy-92.5.mod/src/Config.h	2018-01-21 17:45:51.081920897 +0200
+@@ -61,11 +61,7 @@
+ #define IDENT_PLATFORM "WIN32"
+ #endif
+ #elif defined(LIN)
+-#if defined(_64BIT)
+-#define IDENT_PLATFORM "LIN64"
+-#else
+-#define IDENT_PLATFORM "LIN32"
+-#endif
++#define IDENT_PLATFORM "TERMUX"
+ #elif defined(MACOSX)
+ #define IDENT_PLATFORM "MACOSX"
+ #else
+@@ -88,11 +84,11 @@
+ #define SERVER "powdertoy.co.uk"
+ #define STATICSERVER "static.powdertoy.co.uk"
+ 
+-#define LOCAL_SAVE_DIR "Saves"
++#define LOCAL_SAVE_DIR "/data/data/com.termux/files/home/.powdertoy/saves"
+ 
+-#define STAMPS_DIR "stamps"
++#define STAMPS_DIR "/data/data/com.termux/files/home/.powdertoy/stamps"
+ 
+-#define BRUSH_DIR "Brushes"
++#define BRUSH_DIR "/data/data/com.termux/files/home/.powdertoy/brushes"
+ 
+ //Number of unique thumbnails to have in cache at one time
+ #define THUMB_CACHE_SIZE 256
+diff -uNr The-Powder-Toy-92.5/src/client/Client.cpp The-Powder-Toy-92.5.mod/src/client/Client.cpp
+--- The-Powder-Toy-92.5/src/client/Client.cpp	2017-09-21 16:06:38.000000000 +0300
++++ The-Powder-Toy-92.5.mod/src/client/Client.cpp	2018-01-21 17:45:51.081920897 +0200
+@@ -84,7 +84,8 @@
+ 
+ 	//Read config
+ 	std::ifstream configFile;
+-	configFile.open("powder.pref", std::ios::binary);
++    MakeDirectory("/data/data/com.termux/files/home/.powdertoy");
++	configFile.open("/data/data/com.termux/files/home/.powdertoy/powder.pref", std::ios::binary);
+ 	if (configFile)
+ 	{
+ 		try
+@@ -941,7 +942,8 @@
+ void Client::WritePrefs()
+ {
+ 	std::ofstream configFile;
+-	configFile.open("powder.pref", std::ios::trunc);
++    MakeDirectory("/data/data/com.termux/files/home/.powdertoy");
++	configFile.open("/data/data/com.termux/files/home/.powdertoy/powder.pref", std::ios::trunc);
+ 	
+ 	if (configFile)
+ 	{
+@@ -1144,6 +1146,7 @@
+ 	<< std::setw(2) << std::setfill('0') << std::hex << lastStampName;
+ 	std::string filename = std::string(STAMPS_DIR PATH_SEP + saveID.str()+".stm").c_str();
+ 
++	MakeDirectory("/data/data/com.termux/files/home/.powdertoy");
+ 	MakeDirectory(STAMPS_DIR);
+ 	
+ 	Json::Value stampInfo;
+@@ -1179,6 +1182,7 @@
+ 
+ void Client::updateStamps()
+ {
++	MakeDirectory("/data/data/com.termux/files/home/.powdertoy");
+ 	MakeDirectory(STAMPS_DIR);
+ 
+ 	std::ofstream stampsStream;
+diff -uNr The-Powder-Toy-92.5/src/gui/game/GameController.cpp The-Powder-Toy-92.5.mod/src/gui/game/GameController.cpp
+--- The-Powder-Toy-92.5/src/gui/game/GameController.cpp	2017-09-21 16:06:38.000000000 +0300
++++ The-Powder-Toy-92.5.mod/src/gui/game/GameController.cpp	2018-01-21 17:45:51.091920897 +0200
+@@ -833,7 +833,7 @@
+ #if !defined(MACOSX) && !defined(NO_INSTALL_CHECK)
+ 		if (Client::Ref().IsFirstRun())
+ 		{
+-			Install();
++			//Install();
+ 		}
+ #endif
+ 		firstTick = false;
+@@ -1240,6 +1240,7 @@
+ 			gameSave->authors = localSaveInfo;
+ 			
+ 			gameModel->SetSaveFile(&tempSave);
++			Client::Ref().MakeDirectory("/data/data/com.termux/files/home/.powdertoy");
+ 			Client::Ref().MakeDirectory(LOCAL_SAVE_DIR);
+ 			std::vector<char> saveData = gameSave->Serialise();
+ 			if (saveData.size() == 0)
+diff -uNr The-Powder-Toy-92.5/src/gui/game/GameModel.cpp The-Powder-Toy-92.5.mod/src/gui/game/GameModel.cpp
+--- The-Powder-Toy-92.5/src/gui/game/GameModel.cpp	2017-09-21 16:06:38.000000000 +0300
++++ The-Powder-Toy-92.5.mod/src/gui/game/GameModel.cpp	2018-01-21 17:45:51.091920897 +0200
+@@ -105,6 +105,7 @@
+ 	brushList.push_back(new TriangleBrush(ui::Point(4, 4)));
+ 
+ 	//Load more from brushes folder
++    Client::Ref().MakeDirectory("/data/data/com.termux/files/home/.powdertoy");
+ 	std::vector<string> brushFiles = Client::Ref().DirectorySearch(BRUSH_DIR, "", ".ptb");
+ 	for (size_t i = 0; i < brushFiles.size(); i++)
+ 	{
+diff -uNr The-Powder-Toy-92.5/src/gui/game/GameView.cpp The-Powder-Toy-92.5.mod/src/gui/game/GameView.cpp
+--- The-Powder-Toy-92.5/src/gui/game/GameView.cpp	2017-09-21 16:06:38.000000000 +0300
++++ The-Powder-Toy-92.5.mod/src/gui/game/GameView.cpp	2018-01-21 17:45:51.101920897 +0200
+@@ -1639,9 +1639,7 @@
+ 			c->AdjustBrushSize(-1, !alt, shiftBehaviour, ctrlBehaviour);
+ 		break;
+ 	case 'i':
+-		if(ctrl)
+-			c->Install();
+-		else
++		if(!ctrl)
+ 			c->InvertAirSim();
+ 		break;
+ 	case ';':
+diff -uNr The-Powder-Toy-92.5/src/gui/options/OptionsView.cpp The-Powder-Toy-92.5.mod/src/gui/options/OptionsView.cpp
+--- The-Powder-Toy-92.5/src/gui/options/OptionsView.cpp	2017-09-21 16:06:38.000000000 +0300
++++ The-Powder-Toy-92.5.mod/src/gui/options/OptionsView.cpp	2018-01-21 17:45:51.101920897 +0200
+@@ -245,7 +245,7 @@
+ 			const char* openCommand = "xdg-open ";
+ #endif
+ 			char* workingDirectory = new char[FILENAME_MAX+strlen(openCommand)];
+-			sprintf(workingDirectory, "%s\"%s\"", openCommand, getcwd(NULL, 0));
++			sprintf(workingDirectory, "%s\"%s\"", openCommand, "/data/data/com.termux/files/home/.powdertoy");
+ 			system(workingDirectory);
+ 			delete[] workingDirectory;
+ 		}
+diff -uNr The-Powder-Toy-92.5/src/gui/save/LocalSaveActivity.cpp The-Powder-Toy-92.5.mod/src/gui/save/LocalSaveActivity.cpp
+--- The-Powder-Toy-92.5/src/gui/save/LocalSaveActivity.cpp	2017-09-21 16:06:38.000000000 +0300
++++ The-Powder-Toy-92.5.mod/src/gui/save/LocalSaveActivity.cpp	2018-01-21 17:45:51.101920897 +0200
+@@ -109,6 +109,7 @@
+ 
+ void LocalSaveActivity::saveWrite(std::string finalFilename)
+ {
++	Client::Ref().MakeDirectory("/data/data/com.termux/files/home/.powdertoy");
+ 	Client::Ref().MakeDirectory(LOCAL_SAVE_DIR);
+ 	GameSave *gameSave = save.GetGameSave();
+ 	Json::Value localSaveInfo;

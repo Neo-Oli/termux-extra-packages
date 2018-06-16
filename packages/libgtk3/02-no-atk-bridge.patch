@@ -1,0 +1,16 @@
+diff -uNr gtk.mod/configure.ac gtk.mod2/configure.ac
+--- gtk.mod/configure.ac	2017-11-25 21:33:28.000000000 +0200
++++ gtk.mod2/configure.ac	2018-01-23 18:44:58.980908827 +0200
+@@ -1391,11 +1391,7 @@
+ # Check for Accessibility Toolkit flags
+ ########################################
+ 
+-if test x$enable_x11_backend = xyes; then
+-   ATK_PACKAGES="atk atk-bridge-2.0"
+-else
+-   ATK_PACKAGES="atk"
+-fi
++ATK_PACKAGES="atk"
+ 
+ PKG_CHECK_MODULES(ATK, $ATK_PACKAGES)
+ 

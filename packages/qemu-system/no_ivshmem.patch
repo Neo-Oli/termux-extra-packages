@@ -1,0 +1,12 @@
+diff -uNr qemu-2.10.1/configure qemu-2.10.1.mod/configure
+--- qemu-2.10.1/configure	2017-10-03 00:23:41.000000000 +0300
++++ qemu-2.10.1.mod/configure	2017-12-08 21:20:22.787566992 +0200
+@@ -5056,7 +5056,7 @@
+ 
+ # We can only support ivshmem if we have eventfd
+ if [ "$eventfd" = "yes" ]; then
+-  ivshmem=yes
++  ivshmem=no
+ fi
+ 
+ tools=""

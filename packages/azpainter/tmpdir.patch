@@ -1,0 +1,12 @@
+diff -uNr azpainter-2.1.1/mlib/src/linux/mPath.c azpainter-2.1.1.mod/mlib/src/linux/mPath.c
+--- azpainter-2.1.1/mlib/src/linux/mPath.c	2017-09-18 01:47:09.000000000 +0300
++++ azpainter-2.1.1.mod/mlib/src/linux/mPath.c	2018-04-09 12:01:56.983229351 +0300
+@@ -72,7 +72,7 @@
+ 
+ char *mGetTempPath()
+ {
+-	return mStrdup("/tmp");
++	return mStrdup("@TERMUX_PREFIX@/tmp");
+ }
+ 
+ /** 各プロセスで異なる作業用ファイル名を取得 */

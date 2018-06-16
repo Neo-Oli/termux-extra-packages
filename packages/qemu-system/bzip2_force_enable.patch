@@ -1,0 +1,28 @@
+diff -uNr qemu-2.10.1/configure qemu-2.10.1.mod/configure
+--- qemu-2.10.1/configure	2017-10-03 00:23:41.000000000 +0300
++++ qemu-2.10.1.mod/configure	2017-12-08 21:43:23.001103207 +0200
+@@ -2006,22 +2006,9 @@
+ fi
+ 
+ ##########################################
+-# bzip2 check
++# disable bzip2 check, force enable bz2
+ 
+-if test "$bzip2" != "no" ; then
+-    cat > $TMPC << EOF
+-#include <bzlib.h>
+-int main(void) { BZ2_bzlibVersion(); return 0; }
+-EOF
+-    if compile_prog "" "-lbz2" ; then
+-        bzip2="yes"
+-    else
+-        if test "$bzip2" = "yes"; then
+-            feature_not_found "libbzip2" "Install libbzip2 devel"
+-        fi
+-        bzip2="no"
+-    fi
+-fi
++bzip2="yes"
+ 
+ ##########################################
+ # libseccomp check

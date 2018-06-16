@@ -1,0 +1,12 @@
+diff -uNr qemu-2.11.0/scsi/qemu-pr-helper.c qemu-2.11.0.mod/scsi/qemu-pr-helper.c
+--- qemu-2.11.0/scsi/qemu-pr-helper.c	2017-12-13 19:27:20.000000000 +0200
++++ qemu-2.11.0.mod/scsi/qemu-pr-helper.c	2018-01-15 22:01:49.390265193 +0200
+@@ -24,6 +24,8 @@
+ #include <linux/dm-ioctl.h>
+ #include <scsi/sg.h>
+ 
++#include "lockf_implementation.h"
++
+ #ifdef CONFIG_LIBCAP
+ #include <cap-ng.h>
+ #endif

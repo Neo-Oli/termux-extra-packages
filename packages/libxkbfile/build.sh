@@ -1,0 +1,6 @@
+TERMUX_PKG_DESCRIPTION="X11 keyboard file manipulation library"
+TERMUX_PKG_DEPENDS="libx11, xorg-util-macros"
+TERMUX_PKG_VERSION=1.0.9
+TERMUX_PKG_REVISION=1
+TERMUX_PKG_SRCURL=https://www.x.org/archive/individual/lib/libxkbfile-$TERMUX_PKG_VERSION.tar.bz2
+TERMUX_PKG_SHA256=51817e0530961975d9513b773960b4edd275f7d5c72293d5a151ed4f42aeb16a

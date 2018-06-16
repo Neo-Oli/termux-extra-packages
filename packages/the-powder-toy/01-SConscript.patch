@@ -1,0 +1,55 @@
+diff -uNr The-Powder-Toy-92.5/SConscript The-Powder-Toy-92.5.mod/SConscript
+--- The-Powder-Toy-92.5/SConscript	2018-01-25 22:27:31.441077527 +0200
++++ The-Powder-Toy-92.5.mod/SConscript	2018-01-25 22:34:59.715525978 +0200
+@@ -240,18 +240,14 @@
+ 	if not GetOption('renderer'):
+ 		#Look for SDL
+ 		runSdlConfig = platform == "Linux" or compilePlatform == "Linux"
+-		if platform == "Darwin" and conf.CheckFramework("SDL"):
+-			runSdlConfig = False
+-		elif not conf.CheckLib("SDL"):
+-			FatalError("SDL development library not found or not installed")
+ 
+ 		if runSdlConfig:
+ 			try:
+-				env.ParseConfig('sdl-config --cflags')
++				env.ParseConfig('bash /data/data/com.termux/files/usr/bin/sdl-config --cflags')
+ 				if GetOption('static'):
+-					env.ParseConfig('sdl-config --static-libs')
++					env.ParseConfig('bash /data/data/com.termux/files/usr/bin/sdl-config --static-libs')
+ 				else:
+-					env.ParseConfig('sdl-config --libs')
++					env.ParseConfig('bash /data/data/com.termux/files/usr/bin/sdl-config --libs')
+ 			except:
+ 				pass
+ 
+@@ -323,10 +319,6 @@
+ 	if not conf.CheckLib(['z', 'zlib']):
+ 		FatalError("libz not found or not installed")
+ 
+-	#Look for pthreads
+-	if not conf.CheckLib(['pthread', 'pthreadVC2']):
+-		FatalError("pthreads development library not found or not installed")
+-
+ 	if msvc:
+ 		if not conf.CheckHeader('dirent.h') or not conf.CheckHeader('fftw3.h') or not conf.CheckHeader('pthread.h') or not conf.CheckHeader('zlib.h'):
+ 			FatalError("Required headers not found")
+@@ -357,9 +349,6 @@
+ 	if platform == "Linux":
+ 		if not conf.CheckLib('X11'):
+ 			FatalError("X11 development library not found or not installed")
+-
+-		if not conf.CheckLib('rt'):
+-			FatalError("librt not found or not installed")
+ 	elif platform == "Windows":
+ 		#These need to go last
+ 		if not conf.CheckLib('gdi32') or not conf.CheckLib('winmm') or (not msvc and not conf.CheckLib('dxguid')):
+@@ -417,8 +406,6 @@
+ 
+ 
+ #Add architecture flags and defines
+-if isX86:
+-	env.Append(CPPDEFINES='X86')
+ if not GetOption('no-sse'):
+ 	if GetOption('sse'):
+ 		if msvc:

@@ -1,0 +1,40 @@
+#!/data/data/com.termux/files/usr/bin/bash
+##
+##  Setup and run X display via VNC server
+##
+
+DISPLAY_NAME="Termux Desktop"
+GEOMETRY="1100x618"
+
+[ -z "${DISPLAY}" ] && export DISPLAY=":1"
+
+show_help() {
+    echo
+    echo " Usage: startx [DISPLAY]"
+    echo
+    echo " Launch X (Openbox) session via VNC server."
+    echo " By default, display '${DISPLAY}' will be used, but"
+    echo " you can specify different."
+    echo
+}
+
+if [ ${#} -gt 0 ]; then
+    if grep -qP '^:\d+$' <(echo "${1}"); then
+        export DISPLAY="${1}"
+    elif [ "${1}" = "-h" ] || [ "${1}" = "--help" ]; then
+        show_help
+        exit 0
+    else
+        echo
+        echo "[!] Invalid option '${1}'."
+        show_help
+        exit 1
+    fi
+fi
+
+if ! vncserver "${DISPLAY}" -name "${DISPLAY_NAME}" -geometry "${GEOMETRY}" -noxstartup; then
+    exit 1
+fi
+
+openbox-session > /dev/null 2>&1
+vncserver -kill "${DISPLAY}"

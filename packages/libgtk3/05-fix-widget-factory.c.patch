@@ -1,0 +1,12 @@
+diff -uNr gtk-3a1a7135a276f2b6336c7566f6342da739a41d39/demos/widget-factory/widget-factory.c gtk-3a1a7135a276f2b6336c7566f6342da739a41d39.mod/demos/widget-factory/widget-factory.c
+--- gtk-3a1a7135a276f2b6336c7566f6342da739a41d39/demos/widget-factory/widget-factory.c	2017-11-25 21:33:28.000000000 +0200
++++ gtk-3a1a7135a276f2b6336c7566f6342da739a41d39.mod/demos/widget-factory/widget-factory.c	2018-01-24 19:22:21.318677921 +0200
+@@ -984,7 +984,7 @@
+   gtk_widget_show (child);
+   gtk_flow_box_insert (GTK_FLOW_BOX (flowbox), child, -1);
+ 
+-  location = "/usr/share/backgrounds/gnome";
++  location = "/data/data/com.termux/files/usr/share/backgrounds/gnome";
+   dir = g_dir_open (location, 0, &error);
+   if (error)
+     {

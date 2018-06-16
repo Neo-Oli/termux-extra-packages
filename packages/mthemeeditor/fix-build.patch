@@ -1,0 +1,76 @@
+diff -uNr mthemeeditor-1.0.0/configure mthemeeditor-1.0.0.mod/configure
+--- mthemeeditor-1.0.0/configure	2017-09-15 18:00:00.000000000 +0300
++++ mthemeeditor-1.0.0.mod/configure	2018-04-09 00:24:20.032059370 +0300
+@@ -4769,35 +4769,7 @@
+ 
+ # need header
+ 
+-as_ac_File=`$as_echo "ac_cv_file_"$freetype_dir/ft2build.h"" | $as_tr_sh`
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for \"$freetype_dir/ft2build.h\"" >&5
+-$as_echo_n "checking for \"$freetype_dir/ft2build.h\"... " >&6; }
+-if eval \${$as_ac_File+:} false; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  test "$cross_compiling" = yes &&
+-  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
+-if test -r ""$freetype_dir/ft2build.h""; then
+-  eval "$as_ac_File=yes"
+-else
+-  eval "$as_ac_File=no"
+-fi
+-fi
+-eval ac_res=\$$as_ac_File
+-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+-$as_echo "$ac_res" >&6; }
+-if eval test \"x\$"$as_ac_File"\" = x"yes"; then :
+-
+-else
+-  as_fn_error $? "(freetype) ft2build.h not found" "$LINENO" 5
+-fi
+-
+-ac_fn_c_check_header_mongrel "$LINENO" "fontconfig/fontconfig.h" "ac_cv_header_fontconfig_fontconfig_h" "$ac_includes_default"
+-if test "x$ac_cv_header_fontconfig_fontconfig_h" = xyes; then :
+-
+-else
+-  as_fn_error $? "fontconfig.h not found" "$LINENO" 5
+-fi
++as_ac_File=yes
+ 
+ 
+ ac_fn_c_check_header_mongrel "$LINENO" "zlib.h" "ac_cv_header_zlib_h" "$ac_includes_default"
+diff -uNr mthemeeditor-1.0.0/configure.ac mthemeeditor-1.0.0.mod/configure.ac
+--- mthemeeditor-1.0.0/configure.ac	2017-09-15 18:00:00.000000000 +0300
++++ mthemeeditor-1.0.0.mod/configure.ac	2018-04-09 00:24:44.589232304 +0300
+@@ -24,7 +24,6 @@
+ 
+ # need header
+ 
+-AC_CHECK_FILE("$freetype_dir/ft2build.h",,AC_MSG_ERROR([(freetype) ft2build.h not found]))
+ AC_CHECK_HEADER([fontconfig/fontconfig.h],,AC_MSG_ERROR(fontconfig.h not found))
+ AC_CHECK_HEADER([zlib.h],,AC_MSG_ERROR(zlib.h not found))
+ AC_CHECK_HEADER([png.h],,AC_MSG_ERROR(png.h not found))
+diff -uNr mthemeeditor-1.0.0/src/Makefile.am mthemeeditor-1.0.0.mod/src/Makefile.am
+--- mthemeeditor-1.0.0/src/Makefile.am	2017-09-15 18:00:00.000000000 +0300
++++ mthemeeditor-1.0.0.mod/src/Makefile.am	2018-04-09 00:26:10.188837562 +0300
+@@ -2,6 +2,6 @@
+ 
+ bin_PROGRAMS=mthemeeditor
+ mthemeeditor_LDADD=../mlib/libmlib.a \
+-  -lX11 -lXext -lfontconfig -lfreetype -lpng -lz -lrt -lm
++  -lX11 -lXext -lfontconfig -lfreetype -lpng -lz -lm -landroid-shmem
+ 
+-mthemeeditor_SOURCES=def.h deftrans.h main.c
+\ В конце файла нет новой строки
++mthemeeditor_SOURCES=def.h deftrans.h main.c
+diff -uNr mthemeeditor-1.0.0/src/Makefile.in mthemeeditor-1.0.0.mod/src/Makefile.in
+--- mthemeeditor-1.0.0/src/Makefile.in	2017-09-15 18:00:00.000000000 +0300
++++ mthemeeditor-1.0.0.mod/src/Makefile.in	2018-04-09 00:26:21.901920655 +0300
+@@ -250,7 +250,7 @@
+ top_srcdir = @top_srcdir@
+ AM_CPPFLAGS = -I../mlib/include -I@freetype_dir@
+ mthemeeditor_LDADD = ../mlib/libmlib.a \
+-  -lX11 -lXext -lfontconfig -lfreetype -lpng -lz -lrt -lm
++  -lX11 -lXext -lfontconfig -lfreetype -lpng -lz -lm -landroid-shmem
+ 
+ mthemeeditor_SOURCES = def.h deftrans.h main.c
+ all: all-am

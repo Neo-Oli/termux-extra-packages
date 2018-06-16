@@ -1,0 +1,21 @@
+diff -uNr lua-5.1.5/src/luaconf.h lua-5.1.5.mod/src/luaconf.h
+--- lua-5.1.5/src/luaconf.h	2008-02-11 18:25:08.000000000 +0200
++++ lua-5.1.5.mod/src/luaconf.h	2017-12-09 15:41:13.261005840 +0200
+@@ -94,7 +94,7 @@
+ 	".\\?.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
+ 
+ #else
+-#define LUA_ROOT	"/usr/local/"
++#define LUA_ROOT	"/data/data/com.termux/files/usr"
+ #define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
+ #define LUA_CDIR	LUA_ROOT "lib/lua/5.1/"
+ #define LUA_PATH_DEFAULT  \
+@@ -647,7 +647,7 @@
+ #include <unistd.h>
+ #define LUA_TMPNAMBUFSIZE	32
+ #define lua_tmpnam(b,e)	{ \
+-	strcpy(b, "/tmp/lua_XXXXXX"); \
++	strcpy(b, "/data/data/com.termux/files/usr/tmp/lua_XXXXXX"); \
+ 	e = mkstemp(b); \
+ 	if (e != -1) close(e); \
+ 	e = (e == -1); }

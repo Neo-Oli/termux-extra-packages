@@ -1,0 +1,8 @@
+#!/data/data/com.termux/files/usr/bin/sh
+
+for i in $(find "${PREFIX}/share/icons" -type f -iname index.theme); do
+    gtk-update-icon-cache $(dirname "${i}") > /dev/null 2>&1
+done
+unset i
+
+exit 0

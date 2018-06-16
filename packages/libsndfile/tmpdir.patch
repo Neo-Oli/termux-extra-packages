@@ -1,0 +1,12 @@
+diff -uNr sndfile/libsndfile-826d5296da54c016e3cb0f7f00de3b9e295b9c4a/src/common.c sndfile.mod/libsndfile-826d5296da54c016e3cb0f7f00de3b9e295b9c4a/src/common.c
+--- libsndfile-826d5296da54c016e3cb0f7f00de3b9e295b9c4a/src/common.c	2017-10-31 10:30:54.000000000 +0200
++++ libsndfile-826d5296da54c016e3cb0f7f00de3b9e295b9c4a.mod/src/common.c	2017-11-25 23:12:51.300872795 +0200
+@@ -1730,7 +1730,7 @@
+ 		tmpdir = getenv ("TEMP") ;
+ 	else
+ 	{	tmpdir = getenv ("TMPDIR") ;
+-		tmpdir = tmpdir == NULL ? "/tmp" : tmpdir ;
++		tmpdir = tmpdir == NULL ? "/data/data/com.termux/files/usr/tmp" : tmpdir ;
+ 		} ;
+ 
+ 	if (tmpdir && access (tmpdir, R_OK | W_OK | X_OK) == 0)

@@ -1,0 +1,8 @@
+#!/data/data/com.termux/files/usr/bin/sh
+
+echo
+echo "Package 'startx' was replaced by 'termux-desktop' and shouldn't"
+echo "be used anymore. To use newer package, execute:"
+echo
+echo "  pkg install termux-desktop"
+echo

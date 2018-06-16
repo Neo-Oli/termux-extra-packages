@@ -1,0 +1,54 @@
+diff -uNr imlib2-1.4.10/src/modules/loaders/loader_bz2.c imlib2-1.4.10.mod/src/modules/loaders/loader_bz2.c
+--- imlib2-1.4.10/src/modules/loaders/loader_bz2.c	2016-02-09 18:53:49.000000000 +0200
++++ imlib2-1.4.10.mod/src/modules/loaders/loader_bz2.c	2017-11-27 14:13:24.631355071 +0200
+@@ -52,7 +52,7 @@
+    ImlibLoader        *loader;
+    FILE               *fp;
+    int                 dest, res;
+-   char               *file, *p, *q, tmp[] = "/tmp/imlib2_loader_bz2-XXXXXX";
++   char               *file, *p, *q, tmp[] = "/data/data/com.termux/files/usr/tmp/imlib2_loader_bz2-XXXXXX";
+    char               *real_ext;
+ 
+    assert(im);
+diff -uNr imlib2-1.4.10/src/modules/loaders/loader_id3.c imlib2-1.4.10.mod/src/modules/loaders/loader_id3.c
+--- imlib2-1.4.10/src/modules/loaders/loader_id3.c	2017-03-25 08:48:49.000000000 +0200
++++ imlib2-1.4.10.mod/src/modules/loaders/loader_id3.c	2017-11-27 14:13:30.241355067 +0200
+@@ -507,7 +507,7 @@
+ 
+    if (loader)
+      {
+-        char               *ofile, tmp[] = "/tmp/imlib2_loader_id3-XXXXXX";
++        char               *ofile, tmp[] = "/data/data/com.termux/files/usr/tmp/imlib2_loader_id3-XXXXXX";
+         int                 dest;
+ 
+         if ((dest = mkstemp(tmp)) < 0)
+diff -uNr imlib2-1.4.10/src/modules/loaders/loader_xpm.c imlib2-1.4.10.mod/src/modules/loaders/loader_xpm.c
+--- imlib2-1.4.10/src/modules/loaders/loader_xpm.c	2017-03-25 08:48:49.000000000 +0200
++++ imlib2-1.4.10.mod/src/modules/loaders/loader_xpm.c	2017-11-27 14:14:02.991355044 +0200
+@@ -51,11 +51,11 @@
+      }
+    /* look in rgb txt database */
+    if (!rgb_txt)
+-      rgb_txt = fopen("/usr/share/X11/rgb.txt", "r");
++      rgb_txt = fopen("/data/data/com.termux/files/usr/share/X11/rgb.txt", "r");
+    if (!rgb_txt)
+-      rgb_txt = fopen("/usr/X11R6/lib/X11/rgb.txt", "r");
++      rgb_txt = fopen("/data/data/com.termux/files/usr/X11R6/lib/X11/rgb.txt", "r");
+    if (!rgb_txt)
+-      rgb_txt = fopen("/usr/openwin/lib/X11/rgb.txt", "r");
++      rgb_txt = fopen("/data/data/com.termux/files/usr/openwin/lib/X11/rgb.txt", "r");
+    if (!rgb_txt)
+       return;
+    fseek(rgb_txt, 0, SEEK_SET);
+diff -uNr imlib2-1.4.10/src/modules/loaders/loader_zlib.c imlib2-1.4.10.mod/src/modules/loaders/loader_zlib.c
+--- imlib2-1.4.10/src/modules/loaders/loader_zlib.c	2016-02-09 18:52:49.000000000 +0200
++++ imlib2-1.4.10.mod/src/modules/loaders/loader_zlib.c	2017-11-27 14:13:27.571355069 +0200
+@@ -44,7 +44,7 @@
+ {
+    ImlibLoader        *loader;
+    int                 src, dest, res;
+-   char               *file, *p, *q, tmp[] = "/tmp/imlib2_loader_zlib-XXXXXX";
++   char               *file, *p, *q, tmp[] = "/data/data/com.termux/files/usr/tmp/imlib2_loader_zlib-XXXXXX";
+    char               *real_ext;
+    struct stat         st;
+ 

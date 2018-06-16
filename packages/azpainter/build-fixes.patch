@@ -1,0 +1,68 @@
+diff -uNr azpainter-2.1.1/configure azpainter-2.1.1.mod/configure
+--- azpainter-2.1.1/configure	2017-09-18 01:47:10.000000000 +0300
++++ azpainter-2.1.1.mod/configure	2018-04-08 19:39:35.805337371 +0300
+@@ -4780,28 +4780,7 @@
+ 
+ 
+ 
+-as_ac_File=`$as_echo "ac_cv_file_"$freetype_dir/ft2build.h"" | $as_tr_sh`
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for \"$freetype_dir/ft2build.h\"" >&5
+-$as_echo_n "checking for \"$freetype_dir/ft2build.h\"... " >&6; }
+-if eval \${$as_ac_File+:} false; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  test "$cross_compiling" = yes &&
+-  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
+-if test -r ""$freetype_dir/ft2build.h""; then
+-  eval "$as_ac_File=yes"
+-else
+-  eval "$as_ac_File=no"
+-fi
+-fi
+-eval ac_res=\$$as_ac_File
+-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+-$as_echo "$ac_res" >&6; }
+-if eval test \"x\$"$as_ac_File"\" = x"yes"; then :
+-
+-else
+-  as_fn_error $? "(freetype) ft2build.h not found" "$LINENO" 5
+-fi
++as_ac_File=yes
+ 
+ ac_fn_c_check_header_mongrel "$LINENO" "fontconfig/fontconfig.h" "ac_cv_header_fontconfig_fontconfig_h" "$ac_includes_default"
+ if test "x$ac_cv_header_fontconfig_fontconfig_h" = xyes; then :
+diff -uNr azpainter-2.1.1/configure.ac azpainter-2.1.1.mod/configure.ac
+--- azpainter-2.1.1/configure.ac	2017-09-18 01:47:09.000000000 +0300
++++ azpainter-2.1.1.mod/configure.ac	2018-04-08 19:38:41.786602184 +0300
+@@ -28,7 +28,6 @@
+   [AC_DEFINE([HAVE_PTHREAD_H], [1], [pthread.h])],
+   AC_MSG_ERROR(pthread.h not found))
+ 
+-AC_CHECK_FILE("$freetype_dir/ft2build.h",,AC_MSG_ERROR([(freetype) ft2build.h not found]))
+ AC_CHECK_HEADER([fontconfig/fontconfig.h],,AC_MSG_ERROR(fontconfig.h not found))
+ AC_CHECK_HEADER([zlib.h],,AC_MSG_ERROR(zlib.h not found))
+ AC_CHECK_HEADER([png.h],,AC_MSG_ERROR(png.h not found))
+diff -uNr azpainter-2.1.1/src/Makefile.am azpainter-2.1.1.mod/src/Makefile.am
+--- azpainter-2.1.1/src/Makefile.am	2017-09-18 01:47:09.000000000 +0300
++++ azpainter-2.1.1.mod/src/Makefile.am	2018-04-08 19:46:11.166039660 +0300
+@@ -3,7 +3,7 @@
+ 
+ bin_PROGRAMS=azpainter
+ azpainter_LDADD=../mlib/libmlib.a \
+-  -lX11 -lXext -lfontconfig -lfreetype -lpng -ljpeg -lz -lrt -lm
++  -lX11 -lXext -lfontconfig -lfreetype -lpng -ljpeg -lz -lm -landroid-shmem
+ 
+ azpainter_SOURCES= \
+ AppCursor.c \
+diff -uNr azpainter-2.1.1/src/Makefile.in azpainter-2.1.1.mod/src/Makefile.in
+--- azpainter-2.1.1/src/Makefile.in	2017-09-18 01:47:10.000000000 +0300
++++ azpainter-2.1.1.mod/src/Makefile.in	2018-04-08 19:46:25.502193601 +0300
+@@ -349,7 +349,7 @@
+ AM_CPPFLAGS = -I../mlib/include -Iinclude -I@freetype_dir@ -DPACKAGE_DATA_DIR=\""$(datadir)/azpainter"\"
+ AM_CFLAGS = -pthread
+ azpainter_LDADD = ../mlib/libmlib.a \
+-  -lX11 -lXext -lfontconfig -lfreetype -lpng -ljpeg -lz -lrt -lm
++  -lX11 -lXext -lfontconfig -lfreetype -lpng -ljpeg -lz -lm -landroid-shmem
+ 
+ azpainter_SOURCES = \
+ AppCursor.c \

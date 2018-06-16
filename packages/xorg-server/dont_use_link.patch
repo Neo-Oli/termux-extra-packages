@@ -1,0 +1,12 @@
+diff -uNr xorg-server-1.19.1/os/utils.c xorg-server-1.19.1.mod/os/utils.c
+--- xorg-server-1.19.1/os/utils.c	2017-01-06 17:03:50.000000000 +0200
++++ xorg-server-1.19.1.mod/os/utils.c	2017-11-25 12:55:23.884458119 +0200
+@@ -331,7 +331,7 @@
+     i = 0;
+     haslock = 0;
+     while ((!haslock) && (i++ < 3)) {
+-        haslock = (link(tmp, LockFile) == 0);
++        haslock = (symlink(tmp, LockFile) == 0);
+         if (haslock) {
+             /*
+              * We're done.

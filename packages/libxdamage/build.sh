@@ -1,0 +1,7 @@
+TERMUX_PKG_HOMEPAGE=https://www.x.org
+TERMUX_PKG_DESCRIPTION="X11 damaged region extension library"
+TERMUX_PKG_DEPENDS="libxfixes, x11-proto"
+TERMUX_PKG_VERSION=1.1.4
+TERMUX_PKG_REVISION=2
+TERMUX_PKG_SRCURL=https://www.x.org/archive/individual/lib/libXdamage-$TERMUX_PKG_VERSION.tar.bz2
+TERMUX_PKG_SHA256=7c3fe7c657e83547f4822bfde30a90d84524efb56365448768409b77f05355ad

@@ -1,0 +1,163 @@
+diff -uNr xterm-330/main.c xterm-330.mod/main.c
+--- xterm-330/main.c	2017-06-21 01:59:13.000000000 +0300
++++ xterm-330.mod/main.c	2017-12-10 13:22:09.686300222 +0200
+@@ -3249,6 +3249,7 @@
+ static void
+ set_owner(char *device, unsigned uid, unsigned gid, unsigned mode)
+ {
++#ifndef __ANDROID__
+     int why;
+ 
+     TRACE_IDS;
+@@ -3281,6 +3282,7 @@
+ 	}
+ 	TRACE(("...chmod failed: %s\n", strerror(why)));
+     }
++#endif
+ }
+ 
+ /*
+@@ -3392,42 +3394,11 @@
+ validShell(const char *pathname)
+ {
+     Boolean result = False;
+-    const char *ok_shells = "/etc/shells";
+-    char *blob;
+-    struct stat sb;
+-    size_t rc;
+-    FILE *fp;
+-
+-    if (validProgram(pathname)
+-	&& stat(ok_shells, &sb) == 0
+-	&& (sb.st_mode & S_IFMT) == S_IFREG
+-	&& ((size_t) sb.st_size > 0)
+-	&& ((size_t) sb.st_size < (((size_t) ~0) - 2))
+-	&& (blob = calloc((size_t) sb.st_size + 2, sizeof(char))) != 0) {
+-	if ((fp = fopen(ok_shells, "r")) != 0) {
+-	    rc = fread(blob, sizeof(char), (size_t) sb.st_size, fp);
+-	    if (rc == (size_t) sb.st_size) {
+-		char *p = blob;
+-		char *q, *r;
+-		blob[rc] = '\0';
+-		while (!result && (q = strtok(p, "\n")) != 0) {
+-		    if ((r = x_strtrim(q)) != 0) {
+-			TRACE(("...test \"%s\"\n", q));
+-			if (!strcmp(q, pathname)) {
+-			    result = True;
+-			} else if (same_leaf(q, (char *) pathname) &&
+-				   same_file(q, pathname)) {
+-			    result = True;
+-			}
+-			free(r);
+-		    }
+-		    p = 0;
+-		}
+-	    }
+-	    fclose(fp);
+-	}
+-	free(blob);
++
++    if (validProgram(pathname)) {
++        result = True;
+     }
++
+     TRACE(("validShell %s ->%d\n", NonNull(pathname), result));
+     return result;
+ }
+@@ -3435,7 +3406,14 @@
+ static char *
+ resetShell(char *oldPath)
+ {
+-    char *newPath = x_strdup("/bin/sh");
++    char *default_shell = "/data/data/com.termux/files/usr/bin/bash";
++    char *user_shell = "/data/data/com.termux/files/home/.termux/shell";
++
++    if (access(user_shell, F_OK) == 0) {
++        default_shell = user_shell;
++    }
++
++    char *newPath = x_strdup(default_shell);
+     char *envPath = getenv("SHELL");
+     if (oldPath != 0)
+ 	free(oldPath);
+diff -uNr xterm-330/main.h xterm-330.mod/main.h
+--- xterm-330/main.h	2016-12-23 01:43:46.000000000 +0200
++++ xterm-330.mod/main.h	2017-12-10 13:12:29.232739518 +0200
+@@ -202,7 +202,7 @@
+ #endif
+ 
+ #ifndef PROJECTROOT
+-#define PROJECTROOT		"/usr/X11R6"
++#define PROJECTROOT		"/data/data/com.termux/files/usr"
+ #endif
+ 
+ /*
+diff -uNr xterm-330/misc.c xterm-330.mod/misc.c
+--- xterm-330/misc.c	2017-06-20 11:52:18.000000000 +0300
++++ xterm-330.mod/misc.c	2017-12-10 13:18:36.365038529 +0200
+@@ -2071,23 +2071,17 @@
+ 	 */
+ 	int pid;
+ 	int p[2];
+-	static char *shell;
++	static char *shell = NULL;
+ 	struct passwd pw;
+ 
+ 	if ((shell = x_getenv("SHELL")) == NULL) {
++        static char *user_shell = "/data/data/com.termux/files/home/.termux/shell";
+ 
+-	    if (x_getpwuid(screen->uid, &pw)) {
+-		char *name = x_getlogin(screen->uid, &pw);
+-		if (*(pw.pw_shell)) {
+-		    shell = pw.pw_shell;
+-		}
+-		free(name);
+-	    }
+-	}
+-
+-	if (shell == 0) {
+-	    static char dummy[] = "/bin/sh";
+-	    shell = dummy;
++        if (access(user_shell, F_OK) == 0) {
++            shell = user_shell;
++        } else {
++            shell = "/data/data/com.termux/files/usr/bin/bash";
++        }
+ 	}
+ 
+ 	if (access(shell, X_OK) != 0) {
+@@ -4670,7 +4664,7 @@
+ #ifdef HAVE_LIBXPM
+ 
+ #ifndef PIXMAP_ROOTDIR
+-#define PIXMAP_ROOTDIR "/usr/share/pixmaps/"
++#define PIXMAP_ROOTDIR "/data/data/com.termux/files/usr/share/pixmaps/"
+ #endif
+ 
+ typedef struct {
+diff -uNr xterm-330/resize.c xterm-330.mod/resize.c
+--- xterm-330/resize.c	2017-05-31 11:58:56.000000000 +0300
++++ xterm-330.mod/resize.c	2017-12-10 13:12:29.242739584 +0200
+@@ -375,7 +375,7 @@
+ 	    if (!OkPasswd(&pw)
+ 		|| *(ptr = pw.pw_shell) == 0) {
+ 		/* this is the same default that xterm uses */
+-		ptr = x_strdup("/bin/sh");
++		ptr = x_strdup("/data/data/com.termux/files/usr/bin/bash");
+ 	    }
+ 	}
+ 
+diff -uNr xterm-330/xterm_io.h xterm-330.mod/xterm_io.h
+--- xterm-330/xterm_io.h	2017-05-19 00:15:14.000000000 +0300
++++ xterm-330.mod/xterm_io.h	2017-12-10 13:12:29.242739584 +0200
+@@ -202,9 +202,8 @@
+ #undef FIONCLEX
+ #endif /* macII */
+ 
+-#if defined(__QNX__) || defined(__GNU__) || defined(__MVS__) || defined(__osf__)
++#if defined(__QNX__) || defined(__GNU__) || defined(__MVS__) || defined(__osf__) || defined(__ANDROID__)
+ #undef TIOCSLTC			/* <sgtty.h> conflicts with <termios.h> */
+-#undef TIOCSLTC
+ #endif
+ 
+ #if defined (__sgi) || (defined(__linux__) && defined(__sparc__)) || defined(__UNIXWARE__)

@@ -1,0 +1,30 @@
+diff -uNr qemu-2.10.1/configure qemu-2.10.1.mod/configure
+--- qemu-2.10.1/configure	2017-10-03 00:23:41.000000000 +0300
++++ qemu-2.10.1.mod/configure	2017-12-08 21:26:51.942976841 +0200
+@@ -1968,23 +1968,10 @@
+ LIBS="$LIBS -lz"
+ 
+ ##########################################
+-# lzo check
++# disable lzo check, force enable instead
+ 
+-if test "$lzo" != "no" ; then
+-    cat > $TMPC << EOF
+-#include <lzo/lzo1x.h>
+-int main(void) { lzo_version(); return 0; }
+-EOF
+-    if compile_prog "" "-llzo2" ; then
+-        libs_softmmu="$libs_softmmu -llzo2"
+-        lzo="yes"
+-    else
+-        if test "$lzo" = "yes"; then
+-            feature_not_found "liblzo2" "Install liblzo2 devel"
+-        fi
+-        lzo="no"
+-    fi
+-fi
++libs_softmmu="$libs_softmmu -llzo2"
++lzo="yes"
+ 
+ ##########################################
+ # snappy check

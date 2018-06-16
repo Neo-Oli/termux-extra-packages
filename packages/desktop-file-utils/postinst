@@ -1,0 +1,5 @@
+#!/data/data/com.termux/files/usr/bin/sh
+
+update-desktop-database --quiet > /dev/null 2>&1
+
+exit 0

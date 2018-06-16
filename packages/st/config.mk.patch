@@ -1,0 +1,25 @@
+diff -uNr st-0.8.1/config.mk st-0.8.1.mod/config.mk
+--- st-0.8.1/config.mk	2018-03-20 22:29:59.000000000 +0200
++++ st-0.8.1.mod/config.mk	2018-04-11 12:01:02.614399748 +0300
+@@ -4,17 +4,17 @@
+ # Customize below to fit your system
+ 
+ # paths
+-PREFIX = /usr/local
++PREFIX = @TERMUX_PREFIX@
+ MANPREFIX = $(PREFIX)/share/man
+ 
+-X11INC = /usr/X11R6/include
+-X11LIB = /usr/X11R6/lib
++X11INC = ${PREFIX}/include
++X11LIB = ${PREFIX}/lib
+ 
+ # includes and libs
+ INCS = -I$(X11INC) \
+        `pkg-config --cflags fontconfig` \
+        `pkg-config --cflags freetype2`
+-LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft \
++LIBS = -L$(X11LIB) -lm -lX11 -lutil -lXft \
+        `pkg-config --libs fontconfig` \
+        `pkg-config --libs freetype2`
+ 

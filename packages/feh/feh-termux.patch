@@ -1,0 +1,90 @@
+diff -uNr feh-2.22.2/src/events.c feh-2.22.2.mod/src/events.c
+--- feh-2.22.2/src/events.c	2017-11-07 18:40:24.000000000 +0200
++++ feh-2.22.2.mod/src/events.c	2017-11-27 14:39:25.171353955 +0200
+@@ -124,7 +124,7 @@
+ 
+ 	free(confpath);
+ 
+-	if (!conf && ((conf = fopen("/etc/feh/buttons", "r")) == NULL))
++	if (!conf && ((conf = fopen("/data/data/com.termux/files/usr/etc/feh/buttons", "r")) == NULL))
+ 		return;
+ 
+ 	while (fgets(line, sizeof(line), conf)) {
+diff -uNr feh-2.22.2/src/filelist.c feh-2.22.2.mod/src/filelist.c
+--- feh-2.22.2/src/filelist.c	2017-11-07 18:40:24.000000000 +0200
++++ feh-2.22.2.mod/src/filelist.c	2017-11-27 14:38:46.771353983 +0200
+@@ -159,7 +159,7 @@
+ {
+ 	char buf[1024];
+ 	size_t readsize;
+-	char *sfn = estrjoin("_", "/tmp/feh_stdin", "XXXXXX", NULL);
++	char *sfn = estrjoin("_", "/data/data/com.termux/files/usr/tmp/feh_stdin", "XXXXXX", NULL);
+ 	int fd = mkstemp(sfn);
+ 	FILE *outfile;
+ 
+diff -uNr feh-2.22.2/src/imlib.c feh-2.22.2.mod/src/imlib.c
+--- feh-2.22.2/src/imlib.c	2017-11-07 18:40:24.000000000 +0200
++++ feh-2.22.2.mod/src/imlib.c	2017-11-27 14:40:17.111353918 +0200
+@@ -102,7 +102,7 @@
+ {
+ 	/* Set up the font stuff */
+ 	imlib_add_path_to_font_path(".");
+-	imlib_add_path_to_font_path(PREFIX "/share/feh/fonts");
++	imlib_add_path_to_font_path("/data/data/com.termux/files/usr/share/feh/fonts");
+ 
+ 	return;
+ }
+@@ -296,7 +296,7 @@
+ 	else
+ 		basename++;
+ 
+-	tmpname = feh_unique_filename("/tmp/", basename);
++	tmpname = feh_unique_filename("/data/data/com.termux/files/usr/tmp/", basename);
+ 
+ 	if (strlen(tmpname) > (NAME_MAX-6))
+ 		tmpname[NAME_MAX-7] = '\0';
+diff -uNr feh-2.22.2/src/keyevents.c feh-2.22.2.mod/src/keyevents.c
+--- feh-2.22.2/src/keyevents.c	2017-11-07 18:40:24.000000000 +0200
++++ feh-2.22.2.mod/src/keyevents.c	2017-11-27 14:39:21.791353958 +0200
+@@ -225,7 +225,7 @@
+ 
+ 	free(confpath);
+ 
+-	if (!conf && ((conf = fopen("/etc/feh/keys", "r")) == NULL))
++	if (!conf && ((conf = fopen("/data/data/com.termux/files/usr/etc/feh/keys", "r")) == NULL))
+ 		return;
+ 
+ 	while (fgets(line, sizeof(line), conf)) {
+diff -uNr feh-2.22.2/src/options.c feh-2.22.2.mod/src/options.c
+--- feh-2.22.2/src/options.c	2017-11-07 18:40:24.000000000 +0200
++++ feh-2.22.2.mod/src/options.c	2017-11-27 14:40:07.111353925 +0200
+@@ -60,7 +60,7 @@
+ 	opt.scroll_step = 20;
+ 	opt.menu_font = estrdup(DEFAULT_MENU_FONT);
+ 	opt.font = NULL;
+-	opt.menu_bg = estrdup(PREFIX "/share/feh/images/menubg_default.png");
++	opt.menu_bg = estrdup("/data/data/com.termux/files/usr/share/feh/images/menubg_default.png");
+ 	opt.max_height = opt.max_width = UINT_MAX;
+ 
+ 	opt.start_list_at = NULL;
+@@ -156,7 +156,7 @@
+ 
+ 	free(oldrcpath);
+ 
+-	if (!fp && ((fp = fopen("/etc/feh/themes", "r")) == NULL))
++	if (!fp && ((fp = fopen("/data/data/com.termux/files/usr/etc/feh/themes", "r")) == NULL))
+ 		return;
+ 
+ 	/* Oooh. We have an options file :) */
+diff -uNr feh-2.22.2/src/slideshow.c feh-2.22.2.mod/src/slideshow.c
+--- feh-2.22.2/src/slideshow.c	2017-11-07 18:40:24.000000000 +0200
++++ feh-2.22.2.mod/src/slideshow.c	2017-11-27 14:38:39.311353988 +0200
+@@ -513,7 +513,7 @@
+ 				if (filelist_tmppath != NULL) {
+ 					strncat(ret, filelist_tmppath, sizeof(ret) - strlen(ret) - 1);
+ 				} else {
+-					filelist_tmppath = feh_unique_filename("/tmp/","filelist");
++					filelist_tmppath = feh_unique_filename("/data/data/com.termux/files/usr/tmp/","filelist");
+ 					feh_write_filelist(filelist, filelist_tmppath);
+ 					strncat(ret, filelist_tmppath, sizeof(ret) - strlen(ret) - 1);
+ 				}

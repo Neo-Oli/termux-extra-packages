@@ -1,0 +1,36 @@
+diff -uNr dwm-6.1/config.mk dwm-6.1.mod/config.mk
+--- dwm-6.1/config.mk	2015-11-09 00:39:37.000000000 +0200
++++ dwm-6.1.mod/config.mk	2018-04-11 12:14:35.110378496 +0300
+@@ -4,11 +4,11 @@
+ # Customize below to fit your system
+ 
+ # paths
+-PREFIX = /usr/local
++PREFIX = @TERMUX_PREFIX@
+ MANPREFIX = ${PREFIX}/share/man
+ 
+-X11INC = /usr/X11R6/include
+-X11LIB = /usr/X11R6/lib
++X11INC = ${PREFIX}/include
++X11LIB = ${PREFIX}/lib
+ 
+ # Xinerama, comment if you don't want it
+ XINERAMALIBS  = -lXinerama
+@@ -16,9 +16,7 @@
+ 
+ # freetype
+ FREETYPELIBS = -lfontconfig -lXft
+-FREETYPEINC = /usr/include/freetype2
+-# OpenBSD (uncomment)
+-FREETYPEINC = ${X11INC}/freetype2
++FREETYPEINC = ${PREFIX}/include/freetype2
+ 
+ # includes and libs
+ INCS = -I${X11INC} -I${FREETYPEINC}
+@@ -33,6 +31,3 @@
+ # Solaris
+ #CFLAGS = -fast ${INCS} -DVERSION=\"${VERSION}\"
+ #LDFLAGS = ${LIBS}
+-
+-# compiler and linker
+-CC = cc

@@ -1,0 +1,22 @@
+diff -uNr luit-1.1.1/sys.c luit-1.1.1.mod/sys.c
+--- luit-1.1.1/sys.c	2012-03-23 06:23:07.000000000 +0200
++++ luit-1.1.1.mod/sys.c	2017-12-10 19:49:32.738502574 +0200
+@@ -303,18 +303,12 @@
+     if (s.st_uid != getuid() || s.st_gid != getgid()) {
+ 	rc = chown(line, getuid(), getgid());
+ 	if (rc < 0) {
+-	    fprintf(stderr,
+-		    "Warning: could not change ownership of tty -- "
+-		    "pty is insecure!\n");
+ 	    return 0;
+ 	}
+     }
+     if ((s.st_mode & 0777) != (S_IRUSR | S_IWUSR | S_IWGRP)) {
+ 	rc = chmod(line, S_IRUSR | S_IWUSR | S_IWGRP);
+ 	if (rc < 0) {
+-	    fprintf(stderr,
+-		    "Warning: could not change permissions of tty -- "
+-		    "pty is insecure!\n");
+ 	    return 0;
+ 	}
+     }

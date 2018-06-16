@@ -1,0 +1,12 @@
+#!/data/data/com.termux/files/usr/bin/sh
+
+glib-compile-schemas "${PREFIX}/share/glib-2.0/schemas" > /dev/null 2>&1
+gtk-query-immodules-3.0 --update-cache > /dev/null 2>&1
+gdk-pixbuf-query-loaders --update-cache > /dev/null 2>&1
+
+for i in $(find "${PREFIX}/share/icons" -type f -iname index.theme); do
+    gtk-update-icon-cache $(dirname "${i}") > /dev/null 2>&1
+done
+unset i
+
+exit 0

@@ -1,0 +1,27 @@
+diff -uNr dmenu-4.8/config.mk dmenu-4.8.mod/config.mk
+--- dmenu-4.8/config.mk	2018-03-14 21:26:40.000000000 +0200
++++ dmenu-4.8.mod/config.mk	2018-04-11 11:53:27.577382974 +0300
+@@ -2,11 +2,11 @@
+ VERSION = 4.8
+ 
+ # paths
+-PREFIX = /usr/local
++PREFIX = @TERMUX_PREFIX@
+ MANPREFIX = ${PREFIX}/share/man
+ 
+-X11INC = /usr/X11R6/include
+-X11LIB = /usr/X11R6/lib
++X11INC = ${PREFIX}/include
++X11LIB = ${PREFIX}/lib
+ 
+ # Xinerama, comment if you don't want it
+ XINERAMALIBS  = -lXinerama
+@@ -14,7 +14,7 @@
+ 
+ # freetype
+ FREETYPELIBS = -lfontconfig -lXft
+-FREETYPEINC = /usr/include/freetype2
++FREETYPEINC = ${PREFIX}/include/freetype2
+ # OpenBSD (uncomment)
+ #FREETYPEINC = ${X11INC}/freetype2
+ 
