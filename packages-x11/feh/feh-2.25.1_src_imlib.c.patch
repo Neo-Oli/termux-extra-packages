@@ -1,7 +1,8 @@
-diff -uNr feh-2.25.1/src/imlib.c feh-2.25.1.mod/src/imlib.c
---- feh-2.25.1/src/imlib.c	2018-03-07 18:53:33.000000000 +0200
-+++ feh-2.25.1.mod/src/imlib.c	2018-06-21 17:31:53.793526576 +0300
-@@ -102,7 +102,7 @@
+diff --git a/src/imlib.c b/src/imlib.c
+index d9c5cd0..b91d8b2 100644
+--- a/src/imlib.c
++++ b/src/imlib.c
+@@ -102,7 +102,7 @@ void init_imlib_fonts(void)
  {
  	/* Set up the font stuff */
  	imlib_add_path_to_font_path(".");
@@ -10,7 +11,7 @@ diff -uNr feh-2.25.1/src/imlib.c feh-2.25.1.mod/src/imlib.c
  
  	return;
  }
-@@ -320,7 +320,7 @@
+@@ -320,7 +320,7 @@ static char *feh_magick_load_image(char *filename)
  	else
  		basename++;
  
@@ -19,3 +20,12 @@ diff -uNr feh-2.25.1/src/imlib.c feh-2.25.1.mod/src/imlib.c
  
  	if (strlen(tmpname) > (NAME_MAX-6))
  		tmpname[NAME_MAX-7] = '\0';
+@@ -407,7 +407,7 @@ static char *feh_http_load_image(char *url)
+ 		else
+ 			path = "";
+ 	} else
+-		path = "/tmp/";
++		path = "/data/data/com.termux/files/usr/tmp/";
+ 
+ 	curl = curl_easy_init();
+ 	if (!curl) {
